@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#f97316">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/manifest.json">
+  <title>QuitBuddy</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ─── Login Screen ─────────────────────────────────── -->
+    <div id="screen-login" class="screen active">
+      <div class="auth-container">
+        <div class="logo">
+          <span class="logo-icon">🚭</span>
+          <h1>QuitBuddy</h1>
+          <p class="tagline">Track • Share • Quit Together</p>
+        </div>
+        <div class="auth-form">
+          <input type="text" id="login-username" placeholder="Enter your username" maxlength="20" autocomplete="off">
+          <button id="btn-login" class="btn btn-primary btn-full">Join / Log In</button>
+        </div>
+        <p class="auth-hint">First time? Just type a new username to create your account.</p>
+      </div>
+    </div>
+
+    <!-- ─── Main App ─────────────────────────────────────── -->
+    <div id="screen-app" class="screen">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="header-left">
+          <span class="logo-icon-sm">🚭</span>
+          <span class="app-title">QuitBuddy</span>
+        </div>
+        <div class="header-right">
+          <span id="header-username" class="username-badge"></span>
+        </div>
+      </header>
+
+      <!-- Tab Navigation -->
+      <nav class="tab-bar">
+        <button class="tab active" data-tab="tracker">
+          <span class="tab-icon">📊</span>
+          <span class="tab-label">Track</span>
+        </button>
+        <button class="tab" data-tab="friends">
+          <span class="tab-icon">👥</span>
+          <span class="tab-label">Friends</span>
+        </button>
+        <button class="tab" data-tab="chat">
+          <span class="tab-icon">💬</span>
+          <span class="tab-label">Chat</span>
+        </button>
+        <button class="tab" data-tab="profile">
+          <span class="tab-icon">⚙️</span>
+          <span class="tab-label">Profile</span>
+        </button>
+      </nav>
+
+      <!-- ─── Tracker Tab ────────────────────────────────── -->
+      <div class="tab-content active" id="tab-tracker">
+        <div class="tracker-card main-counter">
+          <div class="counter-ring" id="counter-ring">
+            <svg viewBox="0 0 200 200" class="ring-svg">
+              <circle cx="100" cy="100" r="88" class="ring-bg"/>
+              <circle cx="100" cy="100" r="88" class="ring-progress" id="ring-progress"/>
+            </svg>
+            <div class="counter-inner">
+              <div class="counter-number" id="today-count">0</div>
+              <div class="counter-limit">of <span id="display-limit">20</span>/day</div>
+            </div>
+          </div>
+          <div class="counter-message" id="counter-message">Great start today! 💪</div>
+        </div>
+
+        <div class="tracker-actions">
+          <button id="btn-log-cig" class="btn btn-action btn-log">
+            <span class="btn-icon">🚬</span>
+            Log Cigarette
+          </button>
+          <button id="btn-remove-cig" class="btn btn-action btn-remove">
+            <span class="btn-icon">↩️</span>
+            Undo
+          </button>
+        </div>
+
+        <!-- Weekly Chart -->
+        <div class="chart-card">
+          <h3 class="card-title">This Week</h3>
+          <div class="week-chart" id="week-chart"></div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="stat-streak">0</div>
+            <div class="stat-label">Smoke-Free Days</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-total">0</div>
+            <div class="stat-label">Total Logged</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-best">-</div>
+            <div class="stat-label">Best Day</div>
+          </div>
+        </div>
+
+        <!-- Friends Progress -->
+        <div class="friends-progress-card" id="friends-progress-section" style="display:none;">
+          <h3 class="card-title">Friends Today</h3>
+          <div id="friends-progress-list" class="friends-progress-list"></div>
+        </div>
+      </div>
+
+      <!-- ─── Friends Tab ────────────────────────────────── -->
+      <div class="tab-content" id="tab-friends">
+        <div class="section-header">
+          <h2>Add Friends</h2>
+          <p class="section-desc">Share your user code to add each other</p>
+        </div>
+
+        <div class="share-card">
+          <label>Your User Code</label>
+          <div class="code-display">
+            <span id="my-user-code" class="user-code"></span>
+            <button id="btn-copy-code" class="btn btn-sm">📋 Copy</button>
+          </div>
+          <button id="btn-share-code" class="btn btn-primary btn-full">📤 Share My Code</button>
+        </div>
+
+        <div class="add-friend-card">
+          <label>Add by Code</label>
+          <div class="input-group">
+            <input type="text" id="friend-code-input" placeholder="Paste friend's code" maxlength="36">
+            <button id="btn-add-friend" class="btn btn-primary">Add</button>
+          </div>
+        </div>
+
+        <div class="search-card">
+          <label>Search Users</label>
+          <input type="text" id="search-users-input" placeholder="Search by username..." maxlength="20" autocomplete="off">
+          <div id="search-results" class="search-results"></div>
+        </div>
+
+        <div class="friends-list-section">
+          <h3 class="card-title">My Friends</h3>
+          <div id="friends-list" class="friends-list">
+            <p class="empty-state">No friends yet. Add some to get started!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Chat Tab ───────────────────────────────────── -->
+      <div class="tab-content" id="tab-chat">
+        <div id="chat-list-view">
+          <div class="section-header">
+            <h2>Chats</h2>
+          </div>
+          <div id="chat-list" class="chat-list">
+            <p class="empty-state">Add friends to start chatting!</p>
+          </div>
+        </div>
+        <div id="chat-room-view" class="chat-room" style="display:none;">
+          <div class="chat-header">
+            <button id="btn-back-chat" class="btn btn-icon">←</button>
+            <span id="chat-partner-name" class="chat-partner-name"></span>
+            <span id="chat-partner-status" class="chat-partner-status"></span>
+          </div>
+          <div id="chat-messages" class="chat-messages"></div>
+          <div class="chat-input-bar">
+            <input type="text" id="chat-input" placeholder="Type a message..." maxlength="500" autocomplete="off">
+            <button id="btn-send-msg" class="btn btn-primary btn-send">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Profile Tab ────────────────────────────────── -->
+      <div class="tab-content" id="tab-profile">
+        <div class="profile-card">
+          <div class="profile-avatar">👤</div>
+          <div class="profile-username" id="profile-username"></div>
+          <div class="profile-id" id="profile-id"></div>
+        </div>
+
+        <div class="settings-card">
+          <h3 class="card-title">Settings</h3>
+          <div class="setting-row">
+            <label>Change Username</label>
+            <div class="input-group">
+              <input type="text" id="new-username" placeholder="New username" maxlength="20">
+              <button id="btn-change-username" class="btn btn-primary">Save</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <label>Daily Cigarette Limit</label>
+            <div class="limit-control">
+              <button id="btn-limit-down" class="btn btn-round">−</button>
+              <span id="limit-display" class="limit-value">20</span>
+              <button id="btn-limit-up" class="btn btn-round">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-card">
+          <h3 class="card-title">Your Stats</h3>
+          <div class="stat-row"><span>Total Cigarettes Logged</span><span id="profile-total"></span></div>
+          <div class="stat-row"><span>Days Tracked</span><span id="profile-days"></span></div>
+          <div class="stat-row"><span>Best Day (Fewest)</span><span id="profile-best"></span></div>
+        </div>
+
+        <button id="btn-logout" class="btn btn-danger btn-full">Log Out</button>
+      </div>
+    </div>
+
+    <!-- ─── Toast Notification ──────────────────────────── -->
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

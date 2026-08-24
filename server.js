@@ -10,9 +10,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 const PORT = process.env.PORT || 3000;
-const DB_PATH = process.env.FLY_APP_NAME
-  ? '/data/quitbuddy.db'
-  : path.join(__dirname, 'quitbuddy.db');
+const DB_PATH = process.env.KOYEB_APP
+  ? '/persistent/quitbuddy.db'
+  : process.env.FLY_APP_NAME
+    ? '/data/quitbuddy.db'
+    : path.join(__dirname, 'quitbuddy.db');
 
 let db;
 
@@ -290,7 +292,7 @@ app.get('*', (req, res) => {
 
 // ── Start ───────────────────────────────────────────────────
 initDB().then(() => {
-  server.listen(PORT, () => {
+  server.listen(PORT, '0.0.0.0', () => {
     console.log(`🚭 QuitBuddy running at http://localhost:${PORT}`);
   });
 }).catch((err) => {

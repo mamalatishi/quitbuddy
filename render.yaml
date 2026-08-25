@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: quitbuddy
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
